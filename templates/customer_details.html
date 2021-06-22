@@ -1,0 +1,130 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="content_wrapper bg_homebefore inner-wrapper">
+<div class="container-fluid">
+
+    <div class="row">
+        <div class="col-12 mb-4">
+        <div class="card bg-info border-0 text-light pt-3 pb-3 h-100">
+            <div class="card-body ">
+            <div class="row">
+                <div class=" col-3"> <i class="icon-people f30"></i> </div>
+                <div class=" col-9">
+                <h2 class="m-0 text-light">{{customer.name}}</h2>
+                <p class="f12 mb-0">{{customer.address}}</p>
+                </div>
+            </div>
+            </div>
+        </div>
+        </div>
+    </div>
+    <!--card widget start-->
+        <div class="card-group mb-4">
+          <div class="card">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-12">
+                  <div class="float-right"> <i class="f30 opacity-3 icon-basket-loaded"></i> </div>
+                  <h3 class="text-success">$ {{customer_cost}}</h3>
+                  <p class="card-subtitle text-muted fw-500">Customer Buy</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Column --> 
+          <!-- Column -->
+          <div class="card">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-12">
+                  <div class="float-right"> <i class="f30 opacity-3 icon-symbol-male"></i> </div>
+                  <h3 class="text-success">$ {{customer_pay}}</h3>
+                  <p class="card-subtitle text-muted fw-500">Customer Pay</p>
+                </div>
+              </div>
+            </div>
+          </div>
+           <!-- Column -->
+          <div class="card">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-12">
+                  <div class="float-right"> <i class="f30 opacity-3 icon-basket-loaded"></i> </div>
+                  <h3 class="text-success">$ {{customer_baki}}</h3>
+                  <p class="card-subtitle text-muted fw-500">Customer Baki</p>
+                </div>
+              </div>
+            </div>
+          </div>
+       </div>
+        <!-- Column -->
+<!--card widget end-->
+
+<div class="content_wrapper bg_homebefore inner-wrapper tables-sec">
+     
+        <!-- state start-->
+        <div class="row">
+
+            <div class="col-6">
+              <div class="card table-responsive">
+                <h4 class="m-t-0 header-title">Customer Buy Details</h4>
+                <table id="datatable" class="table table-bordered">
+                  <thead>
+                    <tr>
+                      <th>Start date</th>
+                      <th>Description</th>
+                      <th>Amount</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                  {% for customer_cost in customer_costs %}
+                    <tr>
+                      <td>{{customer_cost.date|date:"d M Y"}}</td>
+                      <td>{{customer_cost.describe}}n</td>
+                      <td>$ {{customer_cost.amount}}</td>
+                    </tr>
+                  {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <div class="col-6">
+              <div class="card table-responsive">
+                <h4 class="m-t-0 header-title">Customer Pay Details</h4>
+                <table id="datatable" class="table table-bordered">
+                  <thead>
+                    <tr>
+                      <th>Start date</th>
+                      <th>Description</th>
+                      <th>Amount</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                  {% for customer_pay in customer_pays %}
+                    <tr>
+                      <td>{{customer_pay.date|date:"d M Y"}}</td>
+                      <td>{{customer_pay.describe}}n</td>
+                      <td>$ {{customer_pay.amount}}</td>
+                    </tr>
+                  {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        <!-- End row -->
+    
+</div>
+
+        
+
+</div>
+<!-- end container-fluid -->
+</div>
+<!-- end content_wrapper -->
+{% include "partials/footer.html" %}
+
+{% endblock content %}

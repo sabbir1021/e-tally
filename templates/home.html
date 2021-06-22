@@ -1,0 +1,215 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="content_wrapper bg_homebefore inner-wrapper forms-sec">
+<div class="container-fluid">
+    
+    <div class="row">
+      <div class="col-12 grid-margin stretch-card">
+              <div class="card ">
+                <h4 class="header-title">Cash</h4>
+                
+                <form method="post" class="form-inline">
+                 {% csrf_token %}
+                  <input type="text" name="amount" class="form-control mb-2 mr-sm-2" placeholder="Amount">
+                  
+                  <div class="input-group mb-2 mr-sm-2">
+                    <div class="input-group-prepend">
+                      <div class="input-group-text"></div>
+                    </div>
+                    <input type="text" name="describe" class="form-control" placeholder="Description">
+                  </div>
+
+                  <div class="custom-control custom-radio pb-1">
+                      <input type="checkbox" id="sell_cash" name="sell_cash" class="custom-control-input">
+                      <label class="custom-control-label" for="sell_cash">Sell</label>
+                  </div>
+                  <div class="custom-control custom-radio pb-1">
+                      <input type="checkbox" id="buy" name="buy" class="custom-control-input">
+                      <label class="custom-control-label" for="buy">Buy</label>
+                  </div>
+                  <div class="custom-control custom-radio pb-1">
+                      <input type="checkbox" id="cost" name="cost" class="custom-control-input">
+                      <label class="custom-control-label" for="cost">Cost</label>
+                  </div>
+                                                
+                  <button type="submit" class="btn btn-primary mb-2">Submit</button>
+                </form>
+              </div>
+            </div>
+        </div>
+
+        <!-- Start Breadcrumbbar -->
+        <div class="breadcrumbbar"> 
+          <!-- Start row -->
+          <div class="row">
+            <div class="col-md-8 col-lg-8">
+              <h4 class="page-title">Your Calculation </h4>
+            </div>
+          </div>
+        </div>
+        <!-- End Breadcrumbbar --> 
+
+        
+        <!--card widget start-->
+        <div class="card-group mb-4">
+          <div class="card">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-12">
+                  <div class="float-right"> <i class="f30 opacity-3 icon-basket-loaded"></i> </div>
+                  <h3 class="text-success">$ {{total_baki}}</h3>
+                  <p class="card-subtitle text-muted fw-500">Total Baki</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Column --> 
+          <!-- Column -->
+          <div class="card">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-12">
+                  <div class="float-right"> <i class="f30 opacity-3 icon-symbol-male"></i> </div>
+                  <h3 class="text-success">$ {{total_pabe}}</h3>
+                  <p class="card-subtitle text-muted fw-500">Total Pabe</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!--card widget end-->
+
+        <!--card widget start-->
+        <div class="card-group mb-4">
+          <div class="card">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-12">
+                  <div class="float-right"> <i class="f30 opacity-3 icon-basket-loaded"></i> </div>
+                  <h3 class="text-success">$ {{today_sell}}</h3>
+                  <p class="card-subtitle text-muted fw-500">Today Sell</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Column --> 
+          <!-- Column -->
+          <div class="card">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-12">
+                  <div class="float-right"> <i class="f30 opacity-3 icon-symbol-male"></i> </div>
+                  <h3 class="text-success">$ {{today_cash_pay}}</h3>
+                  <p class="card-subtitle text-muted fw-500">Today Cash Pay</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!--card widget end-->
+
+        <!-- Start Breadcrumbbar for customer -->
+        <div class="breadcrumbbar mt-5"> 
+          <!-- Start row -->
+          <div class="row">
+            <div class="col-md-8 col-lg-8">
+              <h4 class="page-title">Cusromer List</h4>
+            </div>
+            <div class="col-md-4 col-lg-4 mr-0">
+              <div class="widgetbar">
+                <a href="{% url 'shop:customer_form'  %}"><button class="btn btn-primary"><i class="ri-refresh-line mr-2"></i>Add Customer</button></a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- End Breadcrumbbar --> 
+         <!-- Start Customer Table -->
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="card">
+                {% comment %} <h4 class="m-t-0 header-title">Customer List</h4> {% endcomment %}
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th>No</th>
+                      <th>Customer Name</th>
+                      <th>Baki</th>
+                      <th>Phone No</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+
+                    {% for customer in customers %}
+                        <tr class="table-active">
+                        <th scope="row">1</th>
+                        <td><a href="{% url 'shop:customer' id=customer.id  %}">{{customer.name}}</a></td>
+                        <td>{{customer.cost_pay.all}}</td>
+                        <td>{{customer.phone}}</td>
+                        </tr>
+                    {% endfor %}
+
+                  </tbody>
+                </table>
+            </div>
+          </div>
+        </div>
+        <!-- End customer table -->
+
+         <!-- Start Breadcrumbbar for supplier -->
+        <div class="breadcrumbbar mt-5"> 
+          <!-- Start row -->
+          <div class="row">
+            <div class="col-md-8 col-lg-8">
+              <h4 class="page-title">Supplier List</h4>
+            </div>
+            <div class="col-md-4 col-lg-4 mr-0">
+              <div class="widgetbar">
+                <a href="{% url 'shop:supplier_form'  %}"><button class="btn btn-primary"><i class="ri-refresh-line mr-2"></i>Add Supplier</button></a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- End Breadcrumbbar supplier --> 
+         <!-- Start supplier Table -->
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="card">
+                {% comment %} <h4 class="m-t-0 header-title">Customer List</h4> {% endcomment %}
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th>No</th>
+                      <th>Supplier Name</th>
+                      <th>Baki</th>
+                      <th>Phone No</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+
+                    {% for supplier in suppliers %}
+                        <tr class="table-active">
+                        <th scope="row">1</th>
+                        <td><a href="{% url 'shop:supplier' id=supplier.id  %}">{{supplier.name}}</a></td>
+                        <td></td>
+                        <td>{{supplier.phone}}</td>
+                        </tr>
+                    {% endfor %}
+
+                  </tbody>
+                </table>
+            </div>
+          </div>
+        </div>
+        <!-- End supplier table -->
+
+
+        </div>
+        <!-- end container-fluid -->
+        </div>
+        <!-- end content_wrapper -->
+
+        {% include "partials/footer.html" %}
+        
+{% endblock content %}

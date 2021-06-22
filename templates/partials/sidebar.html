@@ -1,0 +1,35 @@
+{% load static %}
+
+<!-- start side bar -->
+    <div class="side_bar scroll_auto">
+      <div class="user-panel">
+        {% comment %} <div class="user_image"> <img src= "{% static 'images/about-1.jpg' %}" class="img-circle mCS_img_loaded" alt=""> </div> {% endcomment %}
+        <div class="info">
+          <h2 class="text-white"> {{user.user_shop.shop_name}} </h2>
+          <a href="#"> <i class="fa fa-circle text-success"></i> Online</a> </div>
+      </div>
+      <ul id="dc_accordion" class="sidebar-menu tree">
+        <li> <a href="/" class=" active"> <i class="ti-home"></i> <span>Dashboard</span></a> </li>
+      </ul>
+      <ul id="dc_accordion" class="sidebar-menu tree">
+        <li> <a href="{% url 'shop:monthlybuysell'  %}" class=" active"> <i class="ti-home"></i> <span>Buy-Sell</span></a> </li>
+      </ul>
+      <ul id="dc_accordion" class="sidebar-menu tree">
+        <li> <a href="{% url 'shop:monthlycost'  %}" class=" active"> <i class="ti-home"></i> <span>Cost</span></a> </li>
+      </ul>
+      <ul id="dc_accordion" class="sidebar-menu tree">
+        <li> <a href="{% url 'shop:monthlycash'  %}" class=" active"> <i class="ti-home"></i> <span>Cash</span></a> </li>
+      </ul>
+      <ul id="dc_accordion" class="sidebar-menu tree">
+        <li> <a href="{% url 'shop:monthlybaki'  %}" class=" active"> <i class="ti-home"></i> <span>Baki</span></a> </li>
+      </ul>
+      {% if request.user.is_authenticated %}
+      <ul id="dc_accordion" class="sidebar-menu tree">
+        <li> <a href="{% url 'accounts:change_password'  %}" class=" active"> <i class="ti-home"></i> <span>Change Password</span></a> </li>
+      </ul>
+      <ul id="dc_accordion" class="sidebar-menu tree">
+        <li> <a href="{% url 'accounts:logout' %}" class=" active"> <i class="ti-home"></i> <span>Logout</span></a> </li>
+      </ul>
+      {% endif %}
+    </div>
+    <!-- End side bar -->

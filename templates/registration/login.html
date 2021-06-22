@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<!-- Pre Loader -->
+  <!-- Content_right -->
+    <div class="container_full h-100vh mt-0">
+      <div class="container h-100"> 
+        <!-- State start-->
+        <div class="row h-100 justify-content-center align-items-center">
+            <div class="col-md-8 col-lg-6 mx-auto mb-5"> 
+                <!-- Middle Box -->
+                <div class="middle-box">
+                  <div class="card">
+                    <div class="card-body p-4">
+                      <h4 class="font-22">Sign In</h4>
+                      <p class="text-muted mb-4">Sign in to continue.</p>
+                      
+                      <form method="POST">
+                        {% csrf_token %}
+                        <div class="form-group">
+                          <label class="float-left" for="emailaddress">User Name</label>
+                          <input name="username" class="form-control" type="text"  required placeholder="Enter your Username">
+                        </div>
+                        <div class="form-group"> <a href="{% url 'accounts:password_reset'  %}" class="text-muted float-right"><small>Forgot your password?</small></a>
+                          <label class="float-left" for="password">Password</label>
+                          <input name="password" class="form-control" type="password"  placeholder="Enter your password">
+                        </div>
+                        
+                        <div class="form-group text-center">
+                          <button class="btn btn-primary btn-block" type="submit"> Log In </button>
+                        </div>
+                        <p class="text-dark mb-0">Not a member?<a href="{% url 'accounts:register'  %}" class="text-primary ml-1">Sign Up now</a></p>
+                      </form>
+
+                    </div>
+                    <!-- end card-body --> 
+                  </div>
+                  <!-- end card --> 
+                </div>
+              </div>              
+        </div>     
+        <!-- End row -->         
+      </div>
+    </div>
+ 
+{% endblock content %}

@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="content_wrapper bg_homebefore inner-wrapper tables-sec">
+<div class="container-fluid">
+
+        <form method="GET">
+            <label for="bdaymonth">Select Your Month:</label>
+            <input type="month"  name="month">
+            <input type="submit">
+        </form>
+
+        <br>
+
+        <div class="row">
+            <div class="col-12">
+              <div class="card table-responsive">
+                <h4 class="m-t-0 header-title">Monthly Buy Sell</h4>
+                <table id="datatable" class="table table-bordered">
+                  <thead>
+                    <tr>
+                      <th>Cash Sell</th>
+                      <th>{{cash_sell}}</th>
+                    </tr>
+                  </thead>
+                  <thead>
+                    <tr>
+                      <th>Baki Sell</th>
+                      <th>{{customer_sell}}</th>
+                    </tr>
+                  </thead>
+                  <thead>
+                    <tr>
+                      <th>Cash Buy</th>
+                      <th>-{{cash_buy}}</th>
+                    </tr>
+                  </thead>
+                  <thead>
+                    <tr>
+                      <th>Baki Buy</th>
+                      <th>-{{supplier_buy}}</th>
+                    </tr>
+                  </thead>
+                  
+                  <thead>
+                    <tr>
+                      <th>Balance </th>
+                      <th>{{balance}}</th>
+                    </tr>
+                  </thead>
+                </table>
+              </div>
+            </div>
+        </div>
+        
+</div>
+</div>
+{% endblock content %}

@@ -1,0 +1,46 @@
+{% load static %}
+<!doctype html>
+<html>
+<head>
+
+<title>Tally Khata</title>
+
+{% include "partials/css.html" %}
+
+</head>
+
+<body>
+<!-- Pre Loader -->
+<div id="dvLoading"></div>
+<div class="wrapper"> 
+  
+{% include "partials/header.html" %}
+
+<!-- Content_right -->
+<div class="container_full">
+    
+    {% include "partials/sidebar.html" %}
+
+    <div class="col-8 mx-auto">
+    
+        {% block content %}
+         
+        {% endblock content %}
+    
+    </div>
+    <!-- end col-8 -->
+</div>
+<!-- end Content_right -->
+</div>
+<!-- End wrapper --> 
+</div>
+<!-- end Pre Loader -->
+
+
+
+{% include "partials/js.html" %}
+
+</body>
+
+</html>
+
