@@ -4,6 +4,7 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.utils.timezone import datetime
 User = get_user_model()
+from django.db.models import Max, Min , Count , Sum
 # Create your models here.
 
     
@@ -12,7 +13,17 @@ class Customer(models.Model):
     name = models.CharField(max_length=200)
     phone = models.CharField(max_length=50)
     address = models.CharField(max_length=200)
-           
+
+    @property
+    def cost_amount(self):
+        customer_cost = self.cost_pay.filter(cost=True).aggregate(Sum('amount'))['amount__sum']
+        customer_pay = self.cost_pay.filter(pay=True).aggregate(Sum('amount'))['amount__sum']
+        if customer_cost!=None and customer_pay!=None:
+            final = customer_cost - customer_pay
+        else:
+            final = 0
+        return final
+
     def __str__(self):
         return self.name
 
