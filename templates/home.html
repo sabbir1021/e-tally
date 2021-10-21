@@ -115,7 +115,7 @@
           <!-- Start row -->
           <div class="row">
             <div class="col-md-8 col-lg-8">
-              <h4 class="page-title">Cusromer List</h4>
+              <h4 class="page-title">Customer List</h4>
             </div>
             <div class="col-md-4 col-lg-4 mr-0">
               <div class="widgetbar">
@@ -145,8 +145,10 @@
                         <tr class="table-active">
                         <th scope="row">1</th>
                         <td><a href="{% url 'shop:customer' id=customer.id  %}">{{customer.name}}</a></td>
-                        <td>{{customer.cost_pay.all}}</td>
-                        <td>{{customer.phone}}</td>
+                        <td>
+                         {{customer.cost_amount}}
+                      </td>
+                        <td>{{ customer.phone }}</td>
                         </tr>
                     {% endfor %}
 
