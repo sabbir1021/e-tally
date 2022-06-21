@@ -2,6 +2,7 @@
 
 <!-- start side bar -->
     <div class="side_bar scroll_auto">
+      {% if user.is_authenticated %}
       <div class="user-panel">
         {% comment %} <div class="user_image"> <img src= "{% static 'images/about-1.jpg' %}" class="img-circle mCS_img_loaded" alt=""> </div> {% endcomment %}
         <div class="info">
@@ -23,7 +24,7 @@
       <ul id="dc_accordion" class="sidebar-menu tree">
         <li> <a href="{% url 'shop:monthlybaki'  %}" class=" active"> <i class="ti-home"></i> <span>Baki</span></a> </li>
       </ul>
-      {% if request.user.is_authenticated %}
+      
       <ul id="dc_accordion" class="sidebar-menu tree">
         <li> <a href="{% url 'accounts:change_password'  %}" class=" active"> <i class="ti-home"></i> <span>Change Password</span></a> </li>
       </ul>

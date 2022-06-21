@@ -18,43 +18,23 @@ class HomeView(generic.View):
     def get(self, request, *args, **kwrags):
         form = CashForm()
         
-        today_sell_cash = Cash.objects.all().filter(sell_cash=True,user=request.user,date__day = date.today().day ).aggregate(Sum('amount'))['amount__sum']
-        today_sell_baki = Customer_Cost_Pay.objects.all().filter(user=request.user,cost=True,date__day = date.today().day ).aggregate(Sum('amount'))['amount__sum']
-        if today_sell_cash == None:
-            today_sell_cash = 0
-        if today_sell_baki == None:
-            today_sell_baki = 0
+        today_sell_cash = Cash.objects.all().filter(sell_cash=True,user=request.user,date__day = date.today().day ).aggregate(Sum('amount'))['amount__sum'] or 0
+        today_sell_baki = Customer_Cost_Pay.objects.all().filter(user=request.user,cost=True,date__day = date.today().day ).aggregate(Sum('amount'))['amount__sum'] or 0
         today_sell = today_sell_cash + today_sell_baki
         
-        today_sell_cash_pay = Cash.objects.all().filter(sell_cash=True,user=request.user,date__day = date.today().day).aggregate(Sum('amount'))['amount__sum']
-        today_baki_pay = Customer_Cost_Pay.objects.all().filter(user=request.user,pay=True,date__day = date.today().day).aggregate(Sum('amount'))['amount__sum']
-        today_cash_buy = Cash.objects.all().filter(buy=True,user=request.user,date__day = date.today().day).aggregate(Sum('amount'))['amount__sum']
-        today_cash_cost = Cash.objects.all().filter(cost=True,user=request.user,date__day = date.today().day).aggregate(Sum('amount'))['amount__sum']
-        supplier_baki_pay = Supplier_Buy_Pay.objects.all().filter(user=request.user,pay=True).aggregate(Sum('amount'))['amount__sum']
-        if today_sell_cash_pay == None:
-            today_sell_cash_pay = 0
-        if today_baki_pay == None:
-            today_baki_pay = 0
-        if today_cash_buy == None:
-            today_cash_buy = 0
-        if today_cash_cost == None:
-            today_cash_cost = 0
+        today_sell_cash_pay = Cash.objects.all().filter(sell_cash=True,user=request.user,date__day = date.today().day).aggregate(Sum('amount'))['amount__sum'] or 0
+        today_baki_pay = Customer_Cost_Pay.objects.all().filter(user=request.user,pay=True,date__day = date.today().day).aggregate(Sum('amount'))['amount__sum'] or 0
+        today_cash_buy = Cash.objects.all().filter(buy=True,user=request.user,date__day = date.today().day).aggregate(Sum('amount'))['amount__sum'] or 0
+        today_cash_cost = Cash.objects.all().filter(cost=True,user=request.user,date__day = date.today().day).aggregate(Sum('amount'))['amount__sum'] or 0
+        supplier_baki_pay = Supplier_Buy_Pay.objects.all().filter(user=request.user,pay=True).aggregate(Sum('amount'))['amount__sum'] or 0    
         today_cash_pay = today_sell_cash_pay + today_baki_pay - today_cash_buy - today_cash_cost - supplier_baki_pay
         
-        customer_baki = Customer_Cost_Pay.objects.all().filter(user=request.user,cost=True).aggregate(Sum('amount'))['amount__sum']
-        customer_pay = Customer_Cost_Pay.objects.all().filter(user=request.user,pay=True).aggregate(Sum('amount'))['amount__sum']
-        if customer_baki == None:
-            customer_baki = 0
-        if customer_pay == None:
-            customer_pay = 0
+        customer_baki = Customer_Cost_Pay.objects.all().filter(user=request.user,cost=True).aggregate(Sum('amount'))['amount__sum'] or 0
+        customer_pay = Customer_Cost_Pay.objects.all().filter(user=request.user,pay=True).aggregate(Sum('amount'))['amount__sum'] or 0
         total_baki = customer_baki - customer_pay
 
-        supplier_buy = Supplier_Buy_Pay.objects.all().filter(user=request.user,buy=True).aggregate(Sum('amount'))['amount__sum']
-        supplier_pay = Supplier_Buy_Pay.objects.all().filter(user=request.user,pay=True).aggregate(Sum('amount'))['amount__sum']
-        if supplier_buy == None:
-            supplier_buy = 0
-        if supplier_pay == None:
-            supplier_pay = 0
+        supplier_buy = Supplier_Buy_Pay.objects.all().filter(user=request.user,buy=True).aggregate(Sum('amount'))['amount__sum'] or 0
+        supplier_pay = Supplier_Buy_Pay.objects.all().filter(user=request.user,pay=True).aggregate(Sum('amount'))['amount__sum'] or 0
         total_pabe = supplier_buy - supplier_pay
         
         customers = Customer.objects.prefetch_related('cost_pay').filter(user=request.user)
@@ -91,12 +71,9 @@ class CustomerView(generic.View):
     def get(self, request, *args, **kwrags):
         form = CustomerCostPayForm()
         customer = get_object_or_404(Customer, id=kwrags.get('id'))
-        customer_cost = Customer_Cost_Pay.objects.filter(customer__id=kwrags.get('id'),cost=True).aggregate(Sum('amount'))['amount__sum']
-        customer_pay = Customer_Cost_Pay.objects.filter(customer__id=kwrags.get('id'),pay=True).aggregate(Sum('amount'))['amount__sum']
-        if customer_cost == None:
-            customer_cost = 0
-        if customer_pay == None:
-            customer_pay = 0
+        customer_cost = Customer_Cost_Pay.objects.filter(customer__id=kwrags.get('id'),cost=True).aggregate(Sum('amount'))['amount__sum'] or 0
+        customer_pay = Customer_Cost_Pay.objects.filter(customer__id=kwrags.get('id'),pay=True).aggregate(Sum('amount'))['amount__sum'] or 0
+        
         customer_baki = customer_cost - customer_pay
         contex = {
             'form' : form,
@@ -127,12 +104,9 @@ class SupplierView(generic.View):
     def get(self, request, *args, **kwrags):
         form = SupplierBuyPayForm()
         supplier = get_object_or_404(Supplier, id=kwrags.get('id'))
-        supplier_buy = Supplier_Buy_Pay.objects.filter(supplier__id=kwrags.get('id'),buy=True).aggregate(Sum('amount'))['amount__sum']
-        supplier_pay = Supplier_Buy_Pay.objects.filter(supplier__id=kwrags.get('id'),pay=True).aggregate(Sum('amount'))['amount__sum']
-        if supplier_buy == None:
-            supplier_buy = 0
-        if supplier_pay == None:
-            supplier_pay = 0
+        supplier_buy = Supplier_Buy_Pay.objects.filter(supplier__id=kwrags.get('id'),buy=True).aggregate(Sum('amount'))['amount__sum'] or 0
+        supplier_pay = Supplier_Buy_Pay.objects.filter(supplier__id=kwrags.get('id'),pay=True).aggregate(Sum('amount'))['amount__sum'] or 0
+       
         supplier_baki = supplier_buy - supplier_pay
         contex = {
             'form' : form,
@@ -163,12 +137,9 @@ class CustomerDetailsView(generic.View):
         customer = get_object_or_404(Customer, id=kwrags.get('id'))
         customer_costs = Customer_Cost_Pay.objects.all().filter(customer__id=kwrags.get('id'),cost=True)
         customer_pays = Customer_Cost_Pay.objects.all().filter(customer__id=kwrags.get('id'),pay=True)
-        customer_cost = Customer_Cost_Pay.objects.filter(customer__id=kwrags.get('id'),cost=True).aggregate(Sum('amount'))['amount__sum']
-        customer_pay = Customer_Cost_Pay.objects.filter(customer__id=kwrags.get('id'),pay=True).aggregate(Sum('amount'))['amount__sum']
-        if customer_cost == None:
-            customer_cost = 0
-        if customer_pay == None:
-            customer_pay = 0
+        customer_cost = Customer_Cost_Pay.objects.filter(customer__id=kwrags.get('id'),cost=True).aggregate(Sum('amount'))['amount__sum'] or 0
+        customer_pay = Customer_Cost_Pay.objects.filter(customer__id=kwrags.get('id'),pay=True).aggregate(Sum('amount'))['amount__sum'] or 0
+        
         customer_baki = customer_cost - customer_pay
         contex = {
             'customer': customer,
@@ -185,12 +156,9 @@ class SupplierDetailsView(generic.View):
         supplier = get_object_or_404(Supplier, id=kwrags.get('id'))
         supplier_buys = Supplier_Buy_Pay.objects.all().filter(supplier__id=kwrags.get('id'),buy=True)
         supplier_pays = Supplier_Buy_Pay.objects.all().filter(supplier__id=kwrags.get('id'),pay=True)
-        supplier_buy = Supplier_Buy_Pay.objects.filter(supplier__id=kwrags.get('id'),buy=True).aggregate(Sum('amount'))['amount__sum']
-        supplier_pay = Supplier_Buy_Pay.objects.filter(supplier__id=kwrags.get('id'),pay=True).aggregate(Sum('amount'))['amount__sum']
-        if supplier_buy == None:
-            supplier_buy = 0
-        if supplier_pay == None:
-            supplier_pay = 0
+        supplier_buy = Supplier_Buy_Pay.objects.filter(supplier__id=kwrags.get('id'),buy=True).aggregate(Sum('amount'))['amount__sum'] or 0
+        supplier_pay = Supplier_Buy_Pay.objects.filter(supplier__id=kwrags.get('id'),pay=True).aggregate(Sum('amount'))['amount__sum'] or 0
+        
         supplier_baki = supplier_buy - supplier_pay
         contex = {
             'supplier': supplier,
@@ -253,12 +221,12 @@ class MonthlyCostView(generic.View):
 class MonthlyBakiView(generic.View):
     def get(self, request, *args, **kwrags):
         # old calculation
-        all_baki = Customer_Cost_Pay.objects.all().filter(user=request.user,cost=True).aggregate(Sum('amount'))['amount__sum']
-        all_pay = Customer_Cost_Pay.objects.all().filter(user=request.user,pay=True).aggregate(Sum('amount'))['amount__sum']
+        all_baki = Customer_Cost_Pay.objects.all().filter(user=request.user,cost=True).aggregate(Sum('amount'))['amount__sum'] or 0
+        all_pay = Customer_Cost_Pay.objects.all().filter(user=request.user,pay=True).aggregate(Sum('amount'))['amount__sum'] or 0
         total_baki_all = all_baki - all_pay
         # monthly calculation
-        monthly_baki = Customer_Cost_Pay.objects.all().filter(user=request.user,cost=True,date__month = date.today().month ).aggregate(Sum('amount'))['amount__sum']
-        monthly_pay = Customer_Cost_Pay.objects.all().filter(user=request.user,pay=True,date__month = date.today().month ).aggregate(Sum('amount'))['amount__sum']
+        monthly_baki = Customer_Cost_Pay.objects.all().filter(user=request.user,cost=True,date__month = date.today().month ).aggregate(Sum('amount'))['amount__sum'] or 0
+        monthly_pay = Customer_Cost_Pay.objects.all().filter(user=request.user,pay=True,date__month = date.today().month ).aggregate(Sum('amount'))['amount__sum'] or 0
         total_baki = monthly_baki - monthly_pay
         # old calculation final result
         old_baki = total_baki_all - total_baki
@@ -302,11 +270,11 @@ class MonthlyBakiView(generic.View):
 
 class MonthlyCashView(generic.View):
     def get(self, request, *args, **kwrags):
-        cash_sell = Cash.objects.all().filter(sell_cash=True,user=request.user,date__month = date.today().month).aggregate(Sum('amount'))['amount__sum']
-        customer_pay = Customer_Cost_Pay.objects.all().filter(user=request.user,pay=True,date__month = date.today().month).aggregate(Sum('amount'))['amount__sum']
-        buy_cash = Cash.objects.all().filter(buy=True,user=request.user,date__month = date.today().month).aggregate(Sum('amount'))['amount__sum']
-        supplier_pay = Supplier_Buy_Pay.objects.all().filter(user=request.user,pay=True,date__month = date.today().month).aggregate(Sum('amount'))['amount__sum']
-        cost =  Cash.objects.all().filter(cost=True,user=request.user,date__month = date.today().month).aggregate(Sum('amount'))['amount__sum']
+        cash_sell = Cash.objects.all().filter(sell_cash=True,user=request.user,date__month = date.today().month).aggregate(Sum('amount'))['amount__sum'] or 0
+        customer_pay = Customer_Cost_Pay.objects.all().filter(user=request.user,pay=True,date__month = date.today().month).aggregate(Sum('amount'))['amount__sum'] or 0
+        buy_cash = Cash.objects.all().filter(buy=True,user=request.user,date__month = date.today().month).aggregate(Sum('amount'))['amount__sum'] or 0
+        supplier_pay = Supplier_Buy_Pay.objects.all().filter(user=request.user,pay=True,date__month = date.today().month).aggregate(Sum('amount'))['amount__sum'] or 0
+        cost =  Cash.objects.all().filter(cost=True,user=request.user,date__month = date.today().month).aggregate(Sum('amount'))['amount__sum'] or 0
         balance = cash_sell + customer_pay - buy_cash - supplier_pay - cost
         
         if 'month' in request.GET:
@@ -341,10 +309,10 @@ class MonthlyCashView(generic.View):
 
 class MonthlyBuySellView(generic.View):
     def get(self, request, *args, **kwrags):
-        cash_sell = Cash.objects.all().filter(sell_cash=True,user=request.user,date__month = date.today().month).aggregate(Sum('amount'))['amount__sum']
-        customer_sell = Customer_Cost_Pay.objects.all().filter(user=request.user, cost=True, date__month = date.today().month).aggregate(Sum('amount'))['amount__sum']
-        cash_buy = Cash.objects.all().filter(buy=True,user=request.user,date__month = date.today().month).aggregate(Sum('amount'))['amount__sum']
-        supplier_buy = Supplier_Buy_Pay.objects.all().filter(user=request.user,buy=True,date__month = date.today().month).aggregate(Sum('amount'))['amount__sum']
+        cash_sell = Cash.objects.all().filter(sell_cash=True,user=request.user,date__month = date.today().month).aggregate(Sum('amount'))['amount__sum'] or 0
+        customer_sell = Customer_Cost_Pay.objects.all().filter(user=request.user, cost=True, date__month = date.today().month).aggregate(Sum('amount'))['amount__sum'] or 0
+        cash_buy = Cash.objects.all().filter(buy=True,user=request.user,date__month = date.today().month).aggregate(Sum('amount'))['amount__sum'] or 0
+        supplier_buy = Supplier_Buy_Pay.objects.all().filter(user=request.user,buy=True,date__month = date.today().month).aggregate(Sum('amount'))['amount__sum'] or 0
         balance = cash_sell + customer_sell - cash_buy - supplier_buy
         
         if 'month' in request.GET:
